@@ -1,0 +1,11 @@
+version: '3'
+services:
+  wp-db:
+    image: "postgres:13"
+    container_name: "wp_2024"
+    environment:
+      POSTGRES_USER: hstoimilov
+      POSTGRES_PASSWORD: 111
+      POSTGRES_DB: events
+    ports:
+      - "5432:5432"

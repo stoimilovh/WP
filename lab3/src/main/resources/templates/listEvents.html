@@ -1,0 +1,64 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Event Booking page - Welcome and choose an Event</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Event Booking App</h1>
+</header>
+<main>
+    <div>
+        <!-- Search form -->
+        <form th:action="@{/servlet/events}" th:method="POST">
+            <label for="search">Search</label>
+            <input id="search" type="search" name="search">
+            <input type="submit">
+        </form>
+    </div>
+
+    <!-- Event selection form -->
+    <form th:method="POST" th:action="@{/eventBooking}">
+        <h2>Choose an event:</h2>
+
+        <!-- Loop through events and display each event's details -->
+        <div th:each="event : ${events}">
+            <label>
+
+                <!-- Display event details -->
+                <input type="radio" name="event" th:value="${event.getName()}">
+<!--                 Hidden field for event ID, for editing purposes -->
+                <input type="hidden" name="id" th:value="${event?.id}">
+                <p>Name: <span th:text="${event.getName()}"></span></p>
+                <p>Description: <span th:text="${event.getDescription()}"></span></p>
+                <p>Rating: <span th:text="${event.getPopularityScore()}"></span></p> <!-- Assuming 'popularityScore' is the rating -->
+                <p>Number of Tickets: <span th:text="${event.getNumberTickets()}"></span></p>
+                <!-- Display location name -->
+                <p>Location: <span th:text="${event.getLocation().getName()}"></span></p>
+
+                <!-- Edit and Delete links for the event -->
+                <a th:href="@{/events/edit-form/{id}(id=${event.getId()})}">Edit</a>
+                <a th:href="@{/events/delete/{id}(id=${event.getId()})}">Delete</a>
+
+
+                <hr/>
+            </label>
+        </div>
+
+        <!-- Ticket selection and submit button -->
+        <h2>Choose number of tickets:</h2>
+        <input type="number" name="numTickets" min="1" max="10"><br/><br/>
+        <input type="submit" value="Submit">
+        <a href="/events/add-form">
+            Add new event
+        </a>
+    </form>
+</main>
+</body>
+</html>

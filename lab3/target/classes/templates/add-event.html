@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add or Edit Event</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        header, main {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 600px;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Add or Edit Event</h1>
+</header>
+
+<main>
+    <!-- Corrected form action based on whether an event is present or not -->
+    <form th:action="@{${event != null ? '/events/edit/' + event.id : '/events/add'}}" method="POST">
+        <!-- Hidden field for event ID, for editing purposes -->
+<!--        <input type="hidden" name="id" th:value="${event?.id}">-->
+
+        <!-- Event Name -->
+        <div class="form-group">
+            <label for="name">Event Name:</label>
+            <input type="text" id="name" name="name" th:value="${event?.name}" required>
+        </div>
+
+        <!-- Event Description -->
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required th:text="${event?.description}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="popularityScore">Popularity Score:</label>
+            <textarea id="popularityScore" name="popularityScore"  required th:text="${event?.popularityScore}"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="numberTickets">Number of tickets:</label>
+            <input type="numberTickets" id="numberTickets" name="numberTickets" th:value="${event?.numberTickets}" required>
+        </div>
+
+        <!-- Location Dropdown -->
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <select id="location" name="locationId" required>
+                <option value="" disabled>Select a location</option>
+                <option th:each="location : ${locations}"
+                        th:value="${location.id}"
+                        th:text="${location.name}"
+                        th:selected="${event?.location?.id == location.id}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Save Event</button>
+        <a href="/events">Back</a>
+    </form>
+</main>
+</body>
+</html>
